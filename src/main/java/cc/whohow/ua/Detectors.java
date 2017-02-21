@@ -14,23 +14,30 @@ import java.util.List;
 import java.util.Map;
 
 public class Detectors {
-    public static final List<Detector> PRE_DEFINED = loadPreDefined();
-
-    private static List<Detector> loadPreDefined() {
-        List<Detector> list = new ArrayList<>();
-        list.addAll(loadClasspath("user-agent.yml"));
-        list.addAll(loadClasspath("device-detector.yml"));
-        list.addAll(loadClasspath("ua-parser.yml"));
-        return list;
+    /**
+     * Lazy Load
+     */
+    static class PreDefined {
+        static final List<Detector> DETECTORS = new ArrayList<>();
+        static {
+            DETECTORS.add(new UserAgentDetector());
+            DETECTORS.addAll(loadClasspath("detector.yml"));
+        }
     }
 
+    public static List<Detector> getPreDefined() {
+        return PreDefined.DETECTORS;
+    }
 
-    private static List<Detector> loadClasspath(String classpath) {
+    public static List<Detector> loadClasspath(String classpath) {
         return load(Thread.currentThread().getContextClassLoader().getResource(classpath));
     }
 
+    /**
+     * Load RegexDetector from URL
+     */
     @SuppressWarnings("unchecked")
-    private static List<Detector> load(URL url) {
+    public static List<Detector> load(URL url) {
         try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
             List<Detector> list = new ArrayList<>();
             for (Map<String, String> def : (List<Map<String, String>>) new Yaml().load(reader)) {

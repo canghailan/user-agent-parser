@@ -28,6 +28,10 @@ public class RegexDetector implements Detector {
     }
 
     @Override
+    public Map<String, String> detect(UserAgent userAgent) {
+        return detect(userAgent.toString());
+    }
+
     public Map<String, String> detect(String userAgent) {
         Matcher matcher = regex.matcher(userAgent);
         if (matcher.find()) {
@@ -43,6 +47,9 @@ public class RegexDetector implements Detector {
         return null;
     }
 
+    /**
+     * replace $1, $2 variables
+     */
     private static String replace(Matcher matcher, String text) {
         Matcher var = VAR.matcher(text);
         StringBuffer buffer = null;
