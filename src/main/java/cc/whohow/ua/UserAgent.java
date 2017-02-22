@@ -38,6 +38,14 @@ public class UserAgent {
         return products;
     }
 
+    public Product getProduct(int index) {
+        if (index >= 0) {
+            return products.get(index);
+        } else {
+            return products.get(products.size() + index);
+        }
+    }
+
     public String toString() {
         return userAgent;
     }

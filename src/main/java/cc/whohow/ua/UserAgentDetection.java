@@ -26,6 +26,10 @@ public class UserAgentDetection {
         this.detections = Collections.unmodifiableMap(detections);
     }
 
+    public UserAgent getUserAgent() {
+        return userAgent;
+    }
+
     public Map<String, Map<String, String>> getDetections() {
         return detections;
     }
