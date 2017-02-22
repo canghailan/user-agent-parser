@@ -18,11 +18,7 @@ public class Detectors {
      * Lazy Load
      */
     static class PreDefined {
-        static final List<Detector> DETECTORS = new ArrayList<>();
-        static {
-            DETECTORS.add(new UserAgentDetector());
-            DETECTORS.addAll(loadClasspath("detector.yml"));
-        }
+        static final List<Detector> DETECTORS = loadClasspath("detector.yml");
     }
 
     public static List<Detector> getPreDefined() {
