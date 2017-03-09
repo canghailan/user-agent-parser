@@ -36,8 +36,11 @@ public class Detectors {
     public static List<Detector> load(URL url) {
         try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
             List<Detector> list = new ArrayList<>();
-            for (Map<String, String> def : (List<Map<String, String>>) new Yaml().load(reader)) {
-                list.add(new RegexDetector(def.get("key"), def, def.get("regex")));
+            for (Map<String, Object> def : (List<Map<String, Object>>) new Yaml().load(reader)) {
+                list.add(new RegexDetector(
+                        def.getOrDefault("key", "").toString(),
+                        def,
+                        def.getOrDefault("regex", "").toString()));
             }
             return Collections.unmodifiableList(list);
         } catch (IOException e) {
